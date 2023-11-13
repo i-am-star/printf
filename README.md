@@ -63,7 +63,7 @@ Use a local buffer of 1024 chars in order to call write as little as possible.
 
 ---
 
-** 5. My weakness is wearing too much leopard print **
+**5. My weakness is wearing too much leopard print**
 
 Handle the following custom conversion specifier:
 
@@ -133,7 +133,8 @@ Handle the following custom conversion specifier:
 
 - R: prints the rot13'ed string
 ---
-**15. * **
+
+<b>15. *</b>
 
 All the above options work well together.
 
