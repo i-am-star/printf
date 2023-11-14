@@ -1,44 +1,34 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
-#include <string.h>
 #include "main.h"
-#include <time.h>
+
 /**
-* print_str - prints a string
-*
-* @val: argument
-*
-* Return: length of string
+* _strlen - finds the lenght of a string.
+* @s: string
+* Return: integer.
 */
-int print_str(va_list val)
+
+int _strlen(char *s)
 {
-	char *str;
+	int c;
 
-	int i, len;
-
-	str = va_arg(val, char *);
-
-	if (str == NULL)
-	{
-		str = "(null)";
-
-		len = _strlen(str);
-
-		for (i = 0; i < len; i++)
-			_putchar(str[i]);
-
-		return (len);
-	}
-
-	else
-	{
-		len = _strlen(str);
-
-		for (i = 0; i < len; i++)
-			_putchar(s[i]);
-			return (len);
-	}
-
-		return (len);
+	for (c = 0; s[c] != 0; c++)
+		;
+	return (c);
 }
+
+/**
+* _strlenc - finds length of a string but for constant characters
+* @s: string
+* Return: integer
+*/
+
+int _strlenc(const char *s)
+{
+	int c;
+
+	for (c = 0; s[c] != 0; c++)
+		;
+	return (c);
+}
+
+
+
