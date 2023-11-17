@@ -1,57 +1,51 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
-#include <string.h>
 #include "main.h"
-#include <time.h>
 
 /**
-* _printf - A function that acts like the printf function
-* and prints to output
-*
-* @format: identifier to look for.
-*
-* Return: the length of the string.
-*/
-
-int _printf(const char * const format, ...)
+ * _printf - formatted output conversion and print data.
+ * @format: input string.
+ *
+ * Return: number of chars printed.
+ */
+int _printf(const char *format, ...)
 {
-	convert p[] = {
-		{"%s", print_s}, {"%c", print_c},
-		{"%%", print_37},
-		{"%i", print_i}, {"%d", print_d}, {"%r", print_revs},
-		{"%R", print_rot13}, {"%b", print_bin},
-		{"%u", print_unsigned},
-		{"%o", print_oct}, {"%x", print_hex}, {"%X", print_HEX},
-		{"%S", print_exc_string}, {"%p", print_pointer}
-	};
+	unsigned int i = 0, len = 0, ibuf = 0;
+	va_list arguments;
+	int (*function)(va_list, char *, unsigned int);
+	char *buffer;
 
-	va_list args;
-	int i = 0, j, length = 0;
-
-	va_start(args, format);
-	if (format == NULL || (format[0] == '%' && format[1] == '\0'))
+	va_start(arguments, format), buffer = malloc(sizeof(char) * 1024);
+	if (!format || !buffer || (format[i] == '%' && !format[i + 1]))
 		return (-1);
-Here:
-	while (format[i] != '\0')
+	if (!format[i])
+		return (0);
+	for (i = 0; format && format[i]; i++)
 	{
-		j = 13;
-		while (j >= 0)
+		if (format[i] == '%')
 		{
-			if (p[j].ph[0] == format[i]
-				&& p[j].ph[1] == format[i + 1])
-			{
-				length += p[j].function(args);
-				i = i + 2;
-				goto Here;
+			if (format[i + 1] == '\0')
+			{	print_buf(buffer, ibuf), free(buffer), va_end(arguments);
+				return (-1);
 			}
-			j--;
+			else
+			{	function = get_print_func(format, i + 1);
+				if (function == NULL)
+				{
+					if (format[i + 1] == ' ' && !format[i + 2])
+						return (-1);
+					handl_buf(buffer, format[i], ibuf), len++, i--;
+				}
+				else
+				{
+					len += function(arguments, buffer, ibuf);
+					i += ev_print_func(format, i + 1);
+				}
+			} i++;
 		}
-		_putchar(format[i]);
-		length++;
-		i++;
+		else
+			handl_buf(buffer, format[i], ibuf), len++;
+		for (ibuf = len; ibuf > 1024; ibuf -= 1024)
+			;
 	}
-	va_end(args);
-	return (length);
+	print_buf(buffer, ibuf), free(buffer), va_end(arguments);
+	return (len);
 }
-
